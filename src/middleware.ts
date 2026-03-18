@@ -12,6 +12,11 @@ const PUBLIC_ROUTES = [
 export async function middleware(request: NextRequest): Promise<NextResponse> {
   const { pathname } = request.nextUrl;
 
+  // Allow CORS preflight through — headers are applied by next.config.ts
+  if (request.method === 'OPTIONS') {
+    return NextResponse.next();
+  }
+
   if (PUBLIC_ROUTES.some(route => pathname.startsWith(route))) {
     return NextResponse.next();
   }
