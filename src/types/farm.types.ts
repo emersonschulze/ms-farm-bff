@@ -49,6 +49,7 @@ export interface FarmModel {
   unitOfMeasureId:         number | null;
   unitOfMeasureDescription: string | null;
   owners:                  FarmOwnerResponse[];
+  isActive:                boolean;
   createdAt:               string;
   updatedAt:               string;
 }
