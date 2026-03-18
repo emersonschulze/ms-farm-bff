@@ -25,7 +25,7 @@ export async function GET(): Promise<NextResponse> {
 export async function POST(request: NextRequest): Promise<NextResponse> {
   const body = (await request.json()) as CreateFarmRequest;
 
-  logger.info('[farms] POST request received', { description: body.description });
+  logger.info('[farms] POST request received', { name: body.name });
 
   try {
     const created = await service.create(body);

@@ -1,22 +1,11 @@
 // ── Shared ────────────────────────────────────────────────────────────────────
 
-export interface PersonContactModel {
-  type:      number;
-  value:     string;
+export interface FarmContactModel {
+  id:        string;
+  phone:     string | null;
+  email:     string | null;
   isPrimary: boolean;
 }
-
-export interface FarmOwnerModel {
-  description:             string;
-  personType:              number;
-  taxId:                   string | null;
-  legalName:               string | null;
-  relationshipType:        number;
-  contacts:                PersonContactModel[];
-  participationPercentage: number;
-}
-
-// ── Response (from ms-farm-process → to frontend) ────────────────────────────
 
 export interface UnitOfMeasureModel {
   id:          number;
@@ -24,86 +13,93 @@ export interface UnitOfMeasureModel {
   symbol:      string;
 }
 
-export interface FarmOwnerResponse {
+// ── Response (from ms-farm-process → to frontend) ────────────────────────────
+
+export interface FarmOwnerModel {
   id:                      string;
-  personId:                string;
-  personDescription:       string;
-  personContacts:          PersonContactModel[];
+  personTaxId:             string;
   participationPercentage: number;
 }
 
 export interface FarmModel {
-  id:                      string;
-  description:             string;
-  postalCode:              string | null;
-  address:                 string | null;
-  neighborhood:            string | null;
-  city:                    string | null;
-  state:                   string | null;
-  contacts:                PersonContactModel[];
-  companyTaxId:            string | null;
-  legalName:               string | null;
-  stateRegistration:       string | null;
-  incraNumber:             string | null;
-  area:                    number | null;
-  unitOfMeasureId:         number | null;
+  id:                       string;
+  name:                     string;
+  companyTaxId:             string | null;
+  legalName:                string | null;
+  stateRegistration:        string | null;
+  incraNumber:              string | null;
+  area:                     number | null;
+  unitOfMeasureId:          number | null;
   unitOfMeasureDescription: string | null;
-  owners:                  FarmOwnerResponse[];
-  isActive:                boolean;
-  createdAt:               string;
-  updatedAt:               string;
+  postalCode:               string | null;
+  address:                  string | null;
+  neighborhood:             string | null;
+  city:                     string | null;
+  state:                    string | null;
+  contacts:                 FarmContactModel[];
+  owners:                   FarmOwnerModel[];
+  isActive:                 boolean;
+  createdAt:                string;
+  updatedAt:                string;
 }
 
 // ── Requests (from frontend → to ms-farm-process) ────────────────────────────
 
-export interface CreatePersonContactRequest {
+export interface CreateFarmContactRequest {
+  phone:     string | null;
+  email:     string | null;
+  isPrimary: boolean;
+}
+
+export interface PersonContactRequest {
   type:      number;
   value:     string;
   isPrimary: boolean;
 }
 
 export interface CreateFarmOwnerRequest {
-  description:             string;
-  personType:              number;
-  taxId:                   string | null;
-  legalName:               string | null;
-  relationshipType:        number;
-  contacts:                CreatePersonContactRequest[];
+  personTaxId:             string;
+  personType:              number;  // 1 = NaturalPerson, 2 = LegalPerson
+  name:                    string;
+  contacts:                PersonContactRequest[];
+  participationPercentage: number;
+}
+
+export interface UpdateFarmOwnerRequest {
+  personTaxId:             string;
   participationPercentage: number;
 }
 
 export interface CreateFarmRequest {
-  description:       string;
-  postalCode:        string | null;
-  address:           string | null;
-  neighborhood:      string | null;
-  city:              string | null;
-  state:             string | null;
-  relationshipType:  number;
-  contacts:          CreatePersonContactRequest[];
-  companyTaxId:      string | null;
-  legalName:         string | null;
+  name:             string;
+  companyTaxId:     string | null;
+  legalName:        string | null;
   stateRegistration: string | null;
-  incraNumber:       string | null;
-  area:              number | null;
-  unitOfMeasureId:   number | null;
-  owners:            CreateFarmOwnerRequest[];
+  incraNumber:      string | null;
+  area:             number | null;
+  unitOfMeasureId:  number | null;
+  postalCode:       string | null;
+  address:          string | null;
+  neighborhood:     string | null;
+  city:             string | null;
+  state:            string | null;
+  contacts:         CreateFarmContactRequest[];
+  owners:           CreateFarmOwnerRequest[];
 }
 
 export interface UpdateFarmRequest {
-  description:       string;
-  postalCode:        string | null;
-  address:           string | null;
-  neighborhood:      string | null;
-  city:              string | null;
-  state:             string | null;
-  relationshipType:  number;
-  contacts:          CreatePersonContactRequest[];
-  companyTaxId:      string | null;
-  legalName:         string | null;
-  stateRegistration: string | null;
-  incraNumber:       string | null;
-  area:              number | null;
-  unitOfMeasureId:   number | null;
-  owners:            CreateFarmOwnerRequest[];
+  name?:             string;
+  companyTaxId?:     string | null;
+  legalName?:        string | null;
+  stateRegistration?: string | null;
+  incraNumber?:      string | null;
+  area?:             number | null;
+  unitOfMeasureId?:  number | null;
+  postalCode?:       string | null;
+  address?:          string | null;
+  neighborhood?:     string | null;
+  city?:             string | null;
+  state?:            string | null;
+  contacts?:         CreateFarmContactRequest[];
+  owners?:           UpdateFarmOwnerRequest[];
 }
