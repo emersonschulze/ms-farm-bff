@@ -1,7 +1,7 @@
 // ── Shared ────────────────────────────────────────────────────────────────────
 
 export interface FarmContactModel {
-  id:        string;
+  id:        number;
   phone:     string | null;
   email:     string | null;
   isPrimary: boolean;
@@ -16,15 +16,15 @@ export interface UnitOfMeasureModel {
 // ── Response (from ms-farm-process → to frontend) ────────────────────────────
 
 export interface FarmOwnerModel {
-  id:                      string;
-  personTaxId:             string;
+  id:                      number;
+  cnpjCpfNumber:           string;
   participationPercentage: number;
 }
 
 export interface FarmModel {
-  id:                       string;
+  id:                       number;
   name:                     string;
-  companyTaxId:             string | null;
+  companyCnpjCpfNumber:     string | null;
   legalName:                string | null;
   stateRegistration:        string | null;
   municipalRegistration:    string | null;
@@ -59,7 +59,7 @@ export interface PersonContactRequest {
 }
 
 export interface CreateFarmOwnerRequest {
-  personTaxId:             string;
+  cnpjCpfNumber:           string;
   personType:              number;  // 1 = NaturalPerson, 2 = LegalPerson
   name:                    string;
   contacts:                PersonContactRequest[];
@@ -67,13 +67,13 @@ export interface CreateFarmOwnerRequest {
 }
 
 export interface UpdateFarmOwnerRequest {
-  personTaxId:             string;
+  cnpjCpfNumber:           string;
   participationPercentage: number;
 }
 
 export interface CreateFarmRequest {
   name:                  string;
-  companyTaxId:          string | null;
+  companyCnpjCpfNumber:  string | null;
   legalName:             string | null;
   stateRegistration:     string | null;
   municipalRegistration: string | null;
@@ -91,7 +91,7 @@ export interface CreateFarmRequest {
 
 export interface UpdateFarmRequest {
   name?:                  string;
-  companyTaxId?:          string | null;
+  companyCnpjCpfNumber?:  string | null;
   legalName?:             string | null;
   stateRegistration?:     string | null;
   municipalRegistration?: string | null;
