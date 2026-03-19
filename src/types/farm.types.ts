@@ -27,6 +27,7 @@ export interface FarmModel {
   companyTaxId:             string | null;
   legalName:                string | null;
   stateRegistration:        string | null;
+  municipalRegistration:    string | null;
   incraNumber:              string | null;
   area:                     number | null;
   unitOfMeasureId:          number | null;
@@ -71,11 +72,12 @@ export interface UpdateFarmOwnerRequest {
 }
 
 export interface CreateFarmRequest {
-  name:             string;
-  companyTaxId:     string | null;
-  legalName:        string | null;
-  stateRegistration: string | null;
-  incraNumber:      string | null;
+  name:                  string;
+  companyTaxId:          string | null;
+  legalName:             string | null;
+  stateRegistration:     string | null;
+  municipalRegistration: string | null;
+  incraNumber:           string | null;
   area:             number | null;
   unitOfMeasureId:  number | null;
   postalCode:       string | null;
@@ -88,11 +90,12 @@ export interface CreateFarmRequest {
 }
 
 export interface UpdateFarmRequest {
-  name?:             string;
-  companyTaxId?:     string | null;
-  legalName?:        string | null;
-  stateRegistration?: string | null;
-  incraNumber?:      string | null;
+  name?:                  string;
+  companyTaxId?:          string | null;
+  legalName?:             string | null;
+  stateRegistration?:     string | null;
+  municipalRegistration?: string | null;
+  incraNumber?:           string | null;
   area?:             number | null;
   unitOfMeasureId?:  number | null;
   postalCode?:       string | null;
