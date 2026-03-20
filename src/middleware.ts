@@ -7,6 +7,8 @@ const PUBLIC_ROUTES = [
   '/api/health',
   '/api/docs',
   '/docs',
+  '/api/v1/pasture-statuses',
+  '/api/v1/units-of-measure',
 ];
 
 export async function middleware(request: NextRequest): Promise<NextResponse> {

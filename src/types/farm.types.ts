@@ -1,3 +1,74 @@
+// ── Culture ───────────────────────────────────────────────────────────────────
+
+export interface CultureModel {
+  id:             number;
+  name:           string;
+  commercialName: string;
+  cycle:          string | null;
+  harvest:        string | null;
+  isActive:       boolean;
+  createdAt:      string;
+  updatedAt:      string;
+}
+
+export interface CreateCultureRequest {
+  name:           string;
+  commercialName: string;
+  cycle:          string | null;
+  harvest:        string | null;
+}
+
+export interface UpdateCultureRequest {
+  name?:           string;
+  commercialName?: string;
+  cycle?:          string | null;
+  harvest?:        string | null;
+}
+
+// ── Pasture ───────────────────────────────────────────────────────────────────
+
+export interface PastureStatusResponse {
+  id:   number;
+  name: string;
+}
+
+export interface PastureResponse {
+  id:                  number;
+  pastureNumber:       string;
+  area:                number;
+  unitOfMeasureId:     number;
+  unitOfMeasureSymbol: string;
+  statusId:            number;
+  statusName:          string;
+  cultureId:           number;
+  cultureName:         string;
+  farmId:              number;
+  farmName:            string;
+  animalCapacity:      number | null;
+  isActive:            boolean;
+  createdAt:           string;
+  updatedAt:           string;
+}
+
+export interface CreatePastureRequest {
+  pastureNumber:   string;
+  area:            number;
+  unitOfMeasureId: number;
+  statusId:        number;
+  cultureId:       number;
+  farmId:          number;
+  animalCapacity:  number | null;
+}
+
+export interface UpdatePastureRequest {
+  pastureNumber?:   string;
+  area?:            number;
+  unitOfMeasureId?: number;
+  statusId?:        number;
+  cultureId?:       number;
+  animalCapacity?:  number | null;
+}
+
 // ── Shared ────────────────────────────────────────────────────────────────────
 
 export interface FarmContactModel {
@@ -18,6 +89,10 @@ export interface UnitOfMeasureModel {
 export interface FarmOwnerModel {
   id:                      number;
   cnpjCpfNumber:           string;
+  personType:              number;   // 1 = NaturalPerson, 2 = LegalPerson
+  name:                    string;
+  phone:                   string | null;
+  email:                   string | null;
   participationPercentage: number;
 }
 

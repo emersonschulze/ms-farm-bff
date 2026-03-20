@@ -47,6 +47,21 @@ export async function httpPut<T>(url: string, body: unknown, options?: RequestOp
   return response.json() as Promise<T>;
 }
 
+export async function httpPatch<T>(url: string, body?: unknown, options?: RequestOptions): Promise<T> {
+  const response = await fetch(url, {
+    ...options,
+    method:  'PATCH',
+    headers: buildHeaders(options?.headers),
+    body:    body !== undefined ? JSON.stringify(body) : undefined,
+  });
+
+  if (!response.ok) {
+    throw new HttpError(response.status, await response.text(), url);
+  }
+
+  return response.json() as Promise<T>;
+}
+
 export async function httpDelete(url: string, options?: RequestOptions): Promise<void> {
   const response = await fetch(url, {
     ...options,
