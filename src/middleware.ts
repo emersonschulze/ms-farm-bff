@@ -11,16 +11,37 @@ const PUBLIC_ROUTES = [
   '/api/v1/units-of-measure',
 ];
 
+// Allowed origins — FRONTEND_URL (single) + ALLOWED_ORIGINS (comma-separated list)
+const ALLOWED_ORIGINS: string[] = [
+  process.env.FRONTEND_URL ?? 'http://localhost:3000',
+  ...(process.env.ALLOWED_ORIGINS?.split(',').map(o => o.trim()).filter(Boolean) ?? []),
+];
+
+function withCors(response: NextResponse, requestOrigin: string | null): NextResponse {
+  const origin = requestOrigin && ALLOWED_ORIGINS.includes(requestOrigin) ? requestOrigin : null;
+
+  if (origin) {
+    response.headers.set('Access-Control-Allow-Origin', origin);
+    response.headers.set('Vary', 'Origin');
+  }
+  response.headers.set('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,DELETE,OPTIONS');
+  response.headers.set('Access-Control-Allow-Headers', 'Content-Type,Authorization');
+  response.headers.set('Access-Control-Allow-Credentials', 'true');
+  response.headers.set('Access-Control-Max-Age', '86400');
+  return response;
+}
+
 export async function middleware(request: NextRequest): Promise<NextResponse> {
   const { pathname } = request.nextUrl;
+  const requestOrigin = request.headers.get('origin');
 
-  // Allow CORS preflight through — headers are applied by next.config.ts
+  // Respond to CORS preflight immediately with the correct headers
   if (request.method === 'OPTIONS') {
-    return NextResponse.next();
+    return withCors(new NextResponse(null, { status: 204 }), requestOrigin);
   }
 
   if (PUBLIC_ROUTES.some(route => pathname.startsWith(route))) {
-    return NextResponse.next();
+    return withCors(NextResponse.next(), requestOrigin);
   }
 
   // Cookie auth takes precedence; Bearer token as fallback
@@ -31,15 +52,18 @@ export async function middleware(request: NextRequest): Promise<NextResponse> {
 
   if (!token) {
     logger.warn('[Middleware] No access token — unauthorized', { pathname });
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    return withCors(NextResponse.json({ error: 'Unauthorized' }, { status: 401 }), requestOrigin);
   }
 
   try {
     await verifyAccessToken(token);
-    return NextResponse.next();
+    return withCors(NextResponse.next(), requestOrigin);
   } catch {
     logger.warn('[Middleware] Invalid or expired token', { pathname });
-    return NextResponse.json({ error: 'Unauthorized', hint: 'Token expired or invalid' }, { status: 401 });
+    return withCors(
+      NextResponse.json({ error: 'Unauthorized', hint: 'Token expired or invalid' }, { status: 401 }),
+      requestOrigin,
+    );
   }
 }
 
