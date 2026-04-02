@@ -69,6 +69,43 @@ export interface UpdatePastureRequest {
   animalCapacity?:  number | null;
 }
 
+// ── Maintenance Services ──────────────────────────────────────────────────────
+
+export interface MaintenanceServiceResponse {
+  id:                         number;
+  description:                string;
+  typeMaintenanceId:          number;
+  typeMaintenanceDescription: string;
+  isActive:                   boolean;
+}
+
+// ── Pasture Summary & History ─────────────────────────────────────────────────
+
+export interface PastureSummaryResponse {
+  totalPastures:                        number;
+  pasturesWithoutMaintenanceOver180Days: number;
+  pasturesInUse:                        number;
+  pasturesResting:                      number;
+  pasturesInRenovation:                 number;
+}
+
+export interface PastureHistoryResponse {
+  id:                     number;
+  pastureId:              number;
+  maintenanceDate:        string;
+  description:            string;
+  maintenanceServiceId:   number | null;
+  maintenanceServiceName: string | null;
+  createdAt:              string;
+}
+
+export interface CreatePastureHistoryRequest {
+  pastureId:            number;
+  maintenanceDate:      string;
+  description:          string;
+  maintenanceServiceId: number | null;
+}
+
 // ── Shared ────────────────────────────────────────────────────────────────────
 
 export interface FarmContactModel {

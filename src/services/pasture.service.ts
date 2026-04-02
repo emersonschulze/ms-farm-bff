@@ -1,5 +1,13 @@
 import { httpGet, httpPost, httpPut, httpPatch } from '@/lib/http-client';
-import type { PastureResponse, PastureStatusResponse, CreatePastureRequest, UpdatePastureRequest } from '@/types/farm.types';
+import type {
+  PastureResponse,
+  PastureStatusResponse,
+  CreatePastureRequest,
+  UpdatePastureRequest,
+  PastureSummaryResponse,
+  PastureHistoryResponse,
+  CreatePastureHistoryRequest,
+} from '@/types/farm.types';
 
 const BASE_URL = process.env.FARM_PROCESS_URL!;
 
@@ -22,6 +30,24 @@ export class PastureService {
 
   async inactivate(id: string): Promise<PastureResponse> {
     return httpPatch<PastureResponse>(`${BASE_URL}/api/v1/pastures/${id}/inactivate`);
+  }
+
+  async getSummary(farmId?: string): Promise<PastureSummaryResponse> {
+    const url = farmId
+      ? `${BASE_URL}/api/v1/pastures/summary?farmId=${farmId}`
+      : `${BASE_URL}/api/v1/pastures/summary`;
+    return httpGet<PastureSummaryResponse>(url);
+  }
+
+  async getHistories(id: string): Promise<PastureHistoryResponse[]> {
+    return httpGet<PastureHistoryResponse[]>(`${BASE_URL}/api/v1/pastures/${id}/histories`);
+  }
+
+  async createHistory(id: string, body: Omit<CreatePastureHistoryRequest, 'pastureId'>): Promise<PastureHistoryResponse> {
+    return httpPost<PastureHistoryResponse>(`${BASE_URL}/api/v1/pastures/${id}/histories`, {
+      ...body,
+      pastureId: Number(id),
+    });
   }
 }
 
